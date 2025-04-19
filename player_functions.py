@@ -9,7 +9,7 @@ def fire_bullet(xaxis, yaxis):
     return bullet_xaxis, bullet_yaxis
 
 def bullet_status():
-    global bullet_state
+    #global bullet_state
     bullet_state = "Fire"
     return bullet_state
 
