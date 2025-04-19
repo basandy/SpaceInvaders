@@ -3,28 +3,29 @@ import random
 import pygame
 from New_Class import *
 import player_functions
-
+enemy_count = 0
 pygame.init()
 pygame.font.init()
 #Creating objects from the actor class, with different coordinates and movement speed
-game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0)
-main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5)
-background = actors('Background.png', 0, 0, 0, 0, 0, 0)
-bullet_level1 = actors('bullet.png', 368, 500, 0, 0, 0, 1)
+game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0,0,0)
+main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5,736,0)
+background = actors('Background.png', 0, 0, 0, 0, 0, 0,0,0)
+bullet_level1 = actors('bullet.png', 368, 500, 0, 0, 0, 1,0,0)
 total_score1 = show_different_values(10, 10) #actors('SCORE', 10, 10, 0, 0, 0, 1)
 enemy_level1 = []
 #Create Level1 enemies using a for loop in the list again appending an object from the actor class
-enemy_level1_num = 1
+enemy_level1_num = 6
 
 for i in range(enemy_level1_num):
     rand_intx = random.randint(50, 750)
     rand_numy = random.randint(0, 30)
+    rand_rlimit = random.randint(rand_intx, 750)
+    rand_llimit = random.randint(0, rand_numy)
     #This code create a new enemy into the list using the actor class
-    enemy_level1.append(actors('ufo3.png', rand_intx, rand_numy, 8, 20, 0, 2))
-    print( f"First run for index {i}, X value is {rand_intx} AND Y value is {rand_numy} and Length of the arracy is {len(enemy_level1)}")
+    enemy_level1.append(actors('ufo3.png', rand_intx, rand_numy, 8, 20, 0, 2,rand_rlimit,rand_llimit))
     if i == 1:
         #generate a test nemy for debugging
-        testenemy = actors('ufo.png', rand_intx, rand_numy +10, 8, 30, 0, 2)
+        testenemy = actors('ufo.png', rand_intx, rand_numy +10, 8, 30, 0, 2,1,1)
 icon = pygame.image.load('spaceship.png')
 pygame.display.set_caption("Space Invaders")
 pygame.display.set_icon(icon)
@@ -69,13 +70,15 @@ while running:
         bullet_level1.bullet_location(bullet_xaxis, bullet_yaxis)
         for i in range(enemy_level1_num):
 
-            iscollision1 = player_functions.iscollision(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis, \
+            iscollision1, distance, xaxisdiff, yaxisdiff, xaxisdiffsqr, yaxisdiffsqr,enemyy, bullety = player_functions.iscollision(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis, \
                                                         bullet_xaxis, bullet_yaxis)
 
             if iscollision1:
-                bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis, main_actor.score, bullet_xaxis, \
+
+                bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score, bullet_xaxis, \
                 bullet_yaxis = player_functions.bullet_impact(bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
-                                                              main_actor.score, bullet_xaxis, bullet_yaxis)
+                                                              enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score, bullet_xaxis, bullet_yaxis)
+
 
     main_actor.actor_location()
     total_score1.show_score(main_actor.score, total_score1.appear_in_xaxis, total_score1.appear_in_xaxis)
@@ -89,8 +92,6 @@ while running:
             main_actor.game_over()
             game_over_image.actor_location()
         enemy_level1[i].enemy_movement()
-        #enemy_level1[i].test_movement()
         enemy_level1[i].actor_location()
-        print(f"x part of {i} is: {enemy_level1[i].appear_in_xaxis} + Y part of {i} is: {enemy_level1[i].appear_in_yaxis}")
-        print(f"x part of {i} is Move: {enemy_level1[i].move_in_xaxis} + Y part of{i} is Move: {enemy_level1[i].move_in_yaxis}")
+
     pygame.display.flip()

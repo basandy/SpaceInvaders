@@ -8,7 +8,7 @@ class actors():
     screen = pygame.display.set_mode((800, 600))
     #This function assigns different parameter to any new object, with location and movement
     #This can also be used to create anew new static image and show it on screen on demand
-    def __init__(self, actorimage,appear_in_xaxis, appear_in_yaxis, move_in_xaxis,move_in_yaxis, score, life):
+    def __init__(self, actorimage,appear_in_xaxis, appear_in_yaxis, move_in_xaxis,move_in_yaxis, score, life,rlimit, llimit):
         self.actorimage = actorimage
         self.appear_in_xaxis = appear_in_xaxis
         self.appear_in_yaxis = appear_in_yaxis
@@ -16,6 +16,8 @@ class actors():
         self.move_in_yaxis = move_in_yaxis
         self.score = score
         self.life = life
+        self.rlimit = rlimit
+        self.llimit = llimit
 
     def __str__(self):
         return f"The player class access for testing"
@@ -27,18 +29,16 @@ class actors():
         return player_image
     #This function changes the movement value of an object when it either side of the screen wall, currently used only for enemies
     def enemy_movement(self):
+        # Reverse direction if hitting screen boundaries
+        if self.appear_in_xaxis >= self.rlimit:  # Right boundary
+            self.move_in_xaxis = -self.move_in_xaxis
+            self.appear_in_yaxis += self.move_in_yaxis
+        if self.appear_in_xaxis <= self.llimit:  # Left boundary
+            self.move_in_xaxis = -self.move_in_xaxis
+            self.appear_in_yaxis += self.move_in_yaxis
         # Update enemy movement
         self.appear_in_xaxis += self.move_in_xaxis
-        #self.appear_in_yaxis += self.move_in_yaxis
-
-        # Reverse direction if hitting screen boundaries
-        if self.appear_in_xaxis >= 756:  # Right boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        if self.appear_in_xaxis <= 0:  # Left boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        return self.appear_in_xaxis, self.appear_in_yaxis
+        return self.appear_in_xaxis, self.appear_in_yaxis, self.rlimit, self.llimit
     #The function to move the bullet toward Y axis by decreasing theY Axis value
     def bullet_movement(self, bullet_yaxis):
         bullet_yaxis = bullet_yaxis - self.move_in_yaxis
@@ -48,29 +48,18 @@ class actors():
     def  bullet_location(self, bullet_xaxis, bullet_yaxis):
         player_image = pygame.image.load(self.actorimage)
         actors.screen.blit(player_image, (bullet_xaxis + 24, bullet_yaxis - 12))
-    #Unused functio to test any object movement, currently created to check the bullet movement
+    #Unused function to test any object movement, currently created to check the bullet movement
     def test_movement(self):
-        randx_left = random.randint(5, 50)
-        print(f"the random num is: {randx_left}")
-        testx_r = self.appear_in_xaxis + randx_left
-        if 400 + randx_left >= 756:
-            testx_r = 756
-        elif 400 + randx_left <= 0:
-            testx_r = 0
-        else:
-            testx_r = 400 + randx_left
 
+        if self.appear_in_xaxis >= self.rlimit:  # Right boundary
+            self.move_in_xaxis = -self.move_in_xaxis
+            self.appear_in_yaxis += self.move_in_yaxis
+        if self.appear_in_xaxis <= self.llimit:  # Left boundary
+            self.move_in_xaxis = -self.move_in_xaxis
+            self.appear_in_yaxis += self.move_in_yaxis
         self.appear_in_xaxis += self.move_in_xaxis
-        # self.appear_in_yaxis += self.move_in_yaxis
+        return self.appear_in_xaxis, self.appear_in_yaxis, self.rlimit, self.llimit
 
-        # Reverse direction if hitting screen boundaries
-        if self.appear_in_xaxis >= testx_r:  # Right boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        if self.appear_in_xaxis <= 0:  # Left boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        return self.appear_in_xaxis, self.appear_in_yaxis
     #This is make make move value of an actor as 0 when Game over condition is achieved, Use any actor and call this method to make te move values as 0
     def game_over(self):
         self.move_in_xaxis = 0
