@@ -53,7 +53,7 @@ while running:
             if event.key == pygame.K_a:
                 if bullet_state == 'Ready':
                     bullet_state = player_functions.bullet_status()
-                    bullet_xaxis, bullet_yaxis = player_functions.fire_bullet(main_actor.appear_in_xaxis,
+                    bullet_level1.appear_in_xaxis, bullet_level1.appear_in_yaxis = player_functions.fire_bullet(main_actor.appear_in_xaxis,
                                                                               main_actor.appear_in_yaxis)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -66,18 +66,17 @@ while running:
     #WHen Key A is pressed the bullet state changed to "Fire", and then the bullet moves until the state is Fire
 
     if bullet_state == "Fire":
-        bullet_yaxis, bullet_state = player_functions.move_bullet(bullet_yaxis, bullet_state)
-        bullet_level1.bullet_location(bullet_xaxis, bullet_yaxis)
+        bullet_level1.appear_in_yaxis, bullet_state = player_functions.move_bullet(bullet_level1.appear_in_yaxis, bullet_state)
+        bullet_level1.test_movement()
         for i in range(enemy_level1_num):
 
-            iscollision1, distance, xaxisdiff, yaxisdiff, xaxisdiffsqr, yaxisdiffsqr,enemyy, bullety = player_functions.iscollision(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis, \
-                                                        bullet_xaxis, bullet_yaxis)
+            iscollision1 = player_functions.iscollision(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,bullet_level1.appear_in_xaxis,bullet_level1.appear_in_yaxis)
 
             if iscollision1:
 
-                bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score, bullet_xaxis, \
-                bullet_yaxis = player_functions.bullet_impact(bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
-                                                              enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score, bullet_xaxis, bullet_yaxis)
+                bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score \
+                = player_functions.bullet_impact(bullet_state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
+                                                              enemy_level1[i].rlimit,enemy_level1[i].llimit, main_actor.score)
 
 
     main_actor.actor_location()
@@ -88,7 +87,7 @@ while running:
         if game_over:
             for i in range(enemy_level1_num):
                 enemy_level1[i].game_over()
-            bullet_level1.game_over()
+            bullet_state = "Ready"
             main_actor.game_over()
             game_over_image.actor_location()
         enemy_level1[i].enemy_movement()

@@ -45,20 +45,14 @@ class actors():
         return bullet_yaxis
     #This function shows teh bullet location after change in Y axis, this is cereated because action location was not feasible
     #This can be checked later if implemeted throught he actor location function
-    def  bullet_location(self, bullet_xaxis, bullet_yaxis):
+    def  bullet_location(self):
         player_image = pygame.image.load(self.actorimage)
-        actors.screen.blit(player_image, (bullet_xaxis + 24, bullet_yaxis - 12))
+        actors.screen.blit(player_image, (self.appear_in_xaxis, self.appear_in_yaxis))
     #Unused function to test any object movement, currently created to check the bullet movement
     def test_movement(self):
 
-        if self.appear_in_xaxis >= self.rlimit:  # Right boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        if self.appear_in_xaxis <= self.llimit:  # Left boundary
-            self.move_in_xaxis = -self.move_in_xaxis
-            self.appear_in_yaxis += self.move_in_yaxis
-        self.appear_in_xaxis += self.move_in_xaxis
-        return self.appear_in_xaxis, self.appear_in_yaxis, self.rlimit, self.llimit
+        player_image = pygame.image.load(self.actorimage)
+        actors.screen.blit(player_image, (self.appear_in_xaxis, self.appear_in_yaxis))
 
     #This is make make move value of an actor as 0 when Game over condition is achieved, Use any actor and call this method to make te move values as 0
     def game_over(self):
