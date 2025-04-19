@@ -8,7 +8,7 @@ class actors():
     screen = pygame.display.set_mode((800, 600))
     #This function assigns different parameter to any new object, with location and movement
     #This can also be used to create anew new static image and show it on screen on demand
-    def __init__(self, actorimage,appear_in_xaxis, appear_in_yaxis, move_in_xaxis,move_in_yaxis, score, life,rlimit, llimit):
+    def __init__(self, actorimage,appear_in_xaxis, appear_in_yaxis, move_in_xaxis,move_in_yaxis, score, life,rlimit, llimit,state):
         self.actorimage = actorimage
         self.appear_in_xaxis = appear_in_xaxis
         self.appear_in_yaxis = appear_in_yaxis
@@ -18,6 +18,7 @@ class actors():
         self.life = life
         self.rlimit = rlimit
         self.llimit = llimit
+        self.state = state
 
     def __str__(self):
         return f"The player class access for testing"

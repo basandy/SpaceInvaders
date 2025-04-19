@@ -7,10 +7,10 @@ enemy_count = 0
 pygame.init()
 pygame.font.init()
 #Creating objects from the actor class, with different coordinates and movement speed
-game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0,0,0)
-main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5,736,0)
-background = actors('Background.png', 0, 0, 0, 0, 0, 0,0,0)
-bullet_level1 = actors('bullet.png', 368, 500, 0, 0, 0, 1,0,0)
+game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0,0,0,"Ready")
+main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5,736,0,"Ready")
+background = actors('Background.png', 0, 0, 0, 0, 0, 0,0,0,"Ready")
+bullet_level1 = actors('bullet.png', 368, 500, 0, 0, 0, 1,0,0,"Ready")
 total_score1 = show_different_values(10, 10) #actors('SCORE', 10, 10, 0, 0, 0, 1)
 enemy_level1 = []
 #Create Level1 enemies using a for loop in the list again appending an object from the actor class
@@ -22,10 +22,10 @@ for i in range(enemy_level1_num):
     rand_rlimit = random.randint(rand_intx, 750)
     rand_llimit = random.randint(0, rand_numy)
     #This code create a new enemy into the list using the actor class
-    enemy_level1.append(actors('ufo3.png', rand_intx, rand_numy, 8, 20, 0, 2,rand_rlimit,rand_llimit))
+    enemy_level1.append(actors('ufo3.png', rand_intx, rand_numy, 8, 20, 0, 2,rand_rlimit,rand_llimit,"Ready"))
     if i == 1:
         #generate a test nemy for debugging
-        testenemy = actors('ufo.png', rand_intx, rand_numy +10, 8, 30, 0, 2,1,1)
+        testenemy = actors('ufo.png', rand_intx, rand_numy +10, 8, 30, 0, 2,1,1,"Ready")
 icon = pygame.image.load('spaceship.png')
 pygame.display.set_caption("Space Invaders")
 pygame.display.set_icon(icon)
