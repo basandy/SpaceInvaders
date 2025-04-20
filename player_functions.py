@@ -3,13 +3,12 @@ import math
 bullet_state = 'Ready'
 
 
-def fire_bullet(xaxis, yaxis):
-    bullet_xaxis = xaxis + 20
-    bullet_yaxis = yaxis - 12
-    return bullet_xaxis, bullet_yaxis
+def fire_bullet(xaxis, yaxis, movex, movey):
+    xaxis = xaxis + movex
+    yaxis = yaxis + movey
+    return xaxis, yaxis
 
 def bullet_status():
-    #global bullet_state
     bullet_state = "Fire"
     return bullet_state
 
