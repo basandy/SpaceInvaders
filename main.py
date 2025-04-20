@@ -3,9 +3,15 @@ import random
 import pygame
 from New_Class import *
 import player_functions
+from pygame import mixer
 enemy_count = 0
 pygame.init()
 pygame.font.init()
+
+gameover_sound = mixer.Sound("game-over.wav")
+background_music = mixer.Sound("game-background.wav")
+bulet_sound = mixer.Sound("bullet-fire.wav")
+bullet_hit_sound = mixer.Sound("enemy-hit.wav")
 #Creating objects from the actor class, with different coordinates and movement speed
 game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0,0,0,"Ready")
 main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5,736,0,"Ready")
@@ -20,7 +26,7 @@ bullet_level1 = []
 bullet_level1.append(actors('bullet.png', 368, 500, 20, -12, 0, 1,0,0,"Ready"))
 bullet_level1.append(actors('bullet.png', 368, 500, -7, -3, 0, 1,0,0,"Ready"))
 bullet_level1.append(actors('bullet.png', 368, 500, 44, -3, 0, 1,0,0,"Ready"))
-
+background_music.play(-1)
 for i in range(enemy_level1_num):
     rand_intx = random.randint(50, 750)
     rand_numy = random.randint(0, 30)
@@ -59,16 +65,9 @@ while running:
                         bullet_level1[i].state = player_functions.bullet_status()
                         bullet_level1[i].appear_in_xaxis, bullet_level1[i].appear_in_yaxis = player_functions.fire_bullet(
                             main_actor.appear_in_xaxis, main_actor.appear_in_yaxis,bullet_level1[i].move_in_xaxis,bullet_level1[i].move_in_yaxis)
+                        bulet_sound.play()
                         break
-                if bullet_level.state == 'Ready':
-                    bullet_level.state = player_functions.bullet_status()
-                    bullet_level.appear_in_xaxis, bullet_level.appear_in_yaxis = player_functions.fire_bullet(main_actor.appear_in_xaxis,
-                                                                              main_actor.appear_in_yaxis,bullet_level.move_in_xaxis,bullet_level.move_in_yaxis)
-                if test_bullet.state == 'Ready':
-                    test_bullet.state = player_functions.bullet_status()
-                    test_bullet.appear_in_xaxis, test_bullet.appear_in_yaxis = player_functions.fire_bullet(main_actor.appear_in_xaxis,
-                                                                              main_actor.appear_in_yaxis,test_bullet.move_in_xaxis, test_bullet.move_in_yaxis)
-                print(bullet_level.state)
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 moveleft = 0
@@ -98,7 +97,7 @@ while running:
                                                                 bullet_level1[j].appear_in_xaxis,
                                                                 bullet_level1[j].appear_in_yaxis)
                     if iscollision1:
-                        print("I shot successfully mate")
+                        bullet_hit_sound.play()
                         bullet_level1[j].state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis, \
                         enemy_level1[i].rlimit, enemy_level1[i].llimit, main_actor.score \
                                          = player_functions.bullet_impact(bullet_level1[j].state, enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
@@ -109,6 +108,7 @@ while running:
         game_over = player_functions.game_over_check(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
                        main_actor.appear_in_xaxis, main_actor.appear_in_yaxis)
         if game_over:
+            gameover_sound.play()
             for i in range(enemy_level1_num):
                 enemy_level1[i].game_over()
             for i in range(len(bullet_level1)):
