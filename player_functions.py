@@ -44,6 +44,8 @@ def bullet_impact(bullet_state, enemyx, enemyy,new_rlimit,new_llimit, score):
     xaxis_enemy = random.randint(50, 750)
     yaxis_enemy = random.randint(0, 50)
     xaxis_limit = random.randint(xaxis_enemy, 750)
+    if xaxis_limit - xaxis_enemy < 10:
+        xaxis_limit = xaxis_enemy + 10
     yaxis_limit = random.randint(0, yaxis_enemy)
     bullet_state, enemyx, enemyy,new_rlimit,new_llimit = ("Ready",xaxis_enemy,yaxis_enemy,xaxis_limit,yaxis_limit)
     return bullet_state, enemyx, enemyy,new_rlimit,new_llimit, score
