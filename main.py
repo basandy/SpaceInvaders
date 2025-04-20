@@ -4,6 +4,8 @@ import pygame
 from New_Class import *
 import player_functions
 from pygame import mixer
+clock = pygame.time.Clock()
+level_display_time = game_over_time = 100
 enemy_count = 0
 pygame.init()
 pygame.font.init()
@@ -14,6 +16,7 @@ bulet_sound = mixer.Sound("bullet-fire.wav")
 bullet_hit_sound = mixer.Sound("enemy-hit.wav")
 #Creating objects from the actor class, with different coordinates and movement speed
 game_over_image = actors('game-over.png', 250, 200, 0, 0, 0, 0,0,0,"Ready")
+level1_image = actors('level-1.png', 250, 100, 0, 0, 0, 0,0,0,"Active")
 main_actor = actors('Defender.png', 368, 536, 5, 0, 0, 5,736,0,"Ready")
 background = actors('Background.png', 0, 0, 0, 0, 0, 0,0,0,"Ready")
 bullet_level = actors('bullet.png', 368, 500, 24, 12, 0, 1,0,0,"Ready")
@@ -49,6 +52,13 @@ running = True
 while running:
     main_actor.screen.fill((199, 34, 44))
     background.actor_location()
+    level_display_time -= 1
+    if level1_image.state == "Active":
+        if level_display_time > 0:
+            level1_image.actor_location()
+            if level_display_time == 0:
+                level1_image.state = "In-Active"
+                level_display_time = 100
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -108,13 +118,18 @@ while running:
         game_over = player_functions.game_over_check(enemy_level1[i].appear_in_xaxis, enemy_level1[i].appear_in_yaxis,\
                        main_actor.appear_in_xaxis, main_actor.appear_in_yaxis)
         if game_over:
-            gameover_sound.play()
+
+            game_over_time -= 1
+            if game_over_time > 0:
+                gameover_sound.play()
+            print(game_over_time)
             for i in range(enemy_level1_num):
                 enemy_level1[i].game_over()
             for i in range(len(bullet_level1)):
                 bullet_level1[i].state = "Ready"
             main_actor.game_over()
             game_over_image.actor_location()
+
         enemy_level1[i].enemy_movement()
         enemy_level1[i].actor_location()
 
