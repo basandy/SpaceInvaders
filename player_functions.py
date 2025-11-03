@@ -31,7 +31,7 @@ def iscollision(enemyx, enemyy, bulletx, bullety):
         return True
     else:
         return False
-#This Function acts to ascertain what happens when the bllet hit an enemy
+#This Function acts to ascertain what happens when the bllet hit an enemy-
 #This reset that enemy position and also changes the bullet state to "Ready" which means that the key A will again Fire a bullet
 #This also changes the bullet x axis and Y axis so that bullet remain hidden and not shown
 #This function also increases by a value(in this case it is 1 when the bullet hit an enemy
